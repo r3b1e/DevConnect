@@ -96,6 +96,24 @@ const register = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+    const user = await User.findById(req.user.id).select("-password");
+    if(!user){
+      return res.status(401).json({message: "User not found"});
+    }
+
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.email = req.body.email || user.email;
+    user.skill = req.body.skill || user.skill;
+    user.profileUrl = req.body.profileUrl || user.profileUrl;
+
+    const updatedUser = await user.save();
+    res.json(updatedUser);
+
+
+}
+
 const logout = (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
@@ -103,4 +121,4 @@ const logout = (req, res) => {
   res.send("Logout Successfull!!");
 }
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, updateProfile };
