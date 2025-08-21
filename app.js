@@ -4,6 +4,8 @@ const {register, login, logout, updateProfile} = require('./src/controllers/auth
 const protect = require("./src/middleware/authMiddleware");
 const cookieParser = require("cookie-parser");
 
+const authRoutes = require('./src/routes/authRoutes');
+
 
 dbConnect();
 
@@ -13,10 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
 
-app.post('/signup', register);
-app.post('/signin', login);
-app.post('/logout', logout);
-app.post("/updatedetails", protect, updateProfile);
+app.use("/api/auth", authRoutes);
 
 // app.use('/', (req, res)=>{
 //     res.send('hello world');
