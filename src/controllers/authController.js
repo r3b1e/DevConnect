@@ -121,4 +121,4 @@ const logout = (req, res) => {
   res.send("Logout Successfull!!");
 }
 
-module.exports = { register, login, logout, updateProfile };
+module.exports = {  register, login, logout, updateProfile };

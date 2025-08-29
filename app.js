@@ -1,6 +1,7 @@
 const express = require('express');
 const dbConnect = require('./src/config/db');
 const {register, login, logout, updateProfile} = require('./src/controllers/authController');
+const ConnectionRoutes = require('./src/routes/requestRoutes');
 const protect = require("./src/middleware/authMiddleware");
 const cookieParser = require("cookie-parser");
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/request", ConnectionRoutes);
 
 // app.use('/', (req, res)=>{
 //     res.send('hello world');
