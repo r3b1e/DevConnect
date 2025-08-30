@@ -74,22 +74,26 @@ const acceptedUsers = async (req, res) => {
         { status: "accepted", toUserId: req.user._id },
       ],
     })
-      .populate("fromUserId", "firstName lastName email gender skill profileUrl location")
-      .populate("toUserId", "firstName lastName email gender skill profileUrl location");
-//
+      .populate(
+        "fromUserId",
+        "firstName lastName email gender skill profileUrl location"
+      )
+      .populate(
+        "toUserId",
+        "firstName lastName email gender skill profileUrl location"
+      );
+    //
     const result = friends.map((connection) => {
       let friend;
-      if(connection.fromUserId._id .equals( req.user._id )){
+      if (connection.fromUserId._id.equals(req.user._id)) {
         friend = connection.toUserId;
-      }
-      else{
+      } else {
         friend = connection.fromUserId;
       }
       return friend;
-    })
+    });
 
-     res.send(result);
-
+    res.send(result);
   } catch (err) {
     res.status(401).json({ message: "Server error", error: err });
   }
@@ -138,9 +142,43 @@ const reviewConnectionRequest = async (req, res) => {
   }
 };
 
+const userFeed = async (req, res) => {
+  try {
+    const page = req.query.page || 0;
+    const limit = req.query.limit || 5;
+    const skip = (page -1) * limit;
+    console.log(limit);
+    const requestedUsers = await Connection.find({
+      $or: [{ fromUserId: req.user_id }, { toUserId: req.user._id }],
+    }).select("fromUserId toUserId");
+
+    const notRequireFeed = new Set();
+    notRequireFeed.add(req.user._id.toString())
+    requestedUsers.forEach((id) => {
+      notRequireFeed.add(id.fromUserId.toString());
+      notRequireFeed.add(id.toUserId.toString());
+    });
+    notRequireFeed.delete(req.user._id.toString());
+
+    // console.log(notRequireFeed);
+
+    const users = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(notRequireFeed) } },
+        { _id: { $ne: req.user._id } },
+      ],
+    }).select("firstName lastName email gender skill profileUrl location").skip(skip).limit(limit);
+
+    res.json(users);
+  } catch (error) {
+    res.status(401).json({ message: "Server error", error: error });
+  }
+};
+
 module.exports = {
   sendConnectionRequest,
   reviewConnectionRequest,
   interestedUsers,
-  acceptedUsers
+  acceptedUsers,
+  userFeed,
 };
