@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: GENDERS,
-      required: true,
     },
     skill: {
       type: [
