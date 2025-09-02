@@ -8,6 +8,8 @@ const { sendConnectionRequest, reviewConnectionRequest, interestedUsers, accepte
 
 router.post("/send/:status/:touserid", protect, sendConnectionRequest);
 router.put("/review/:status/:touserid", protect, reviewConnectionRequest);
+
+
 router.get("/user/interested", protect, interestedUsers);
 router.get("/user/accepted", protect, acceptedUsers);  
 router.get("/user/feed", protect, userFeed); 

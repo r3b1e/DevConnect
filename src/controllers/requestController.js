@@ -14,17 +14,17 @@ const sendConnectionRequest = async (req, res) => {
     });
 
     if (!toUserExist) {
-      return res.status(400).json({ message: "User not exist" });
+      return res.status(402).json({ message: "User not exist" });
     }
 
     const allowedStatus = ["ignored", "interested"];
 
     if (!allowedStatus.includes(status)) {
-      return res.status(401).json({ Message: "Invalid status type" });
+      return res.status(402).json({ Message: "Invalid status type" });
     }
 
     if (touserid == fromUserId) {
-      return res.status(401).json({ message: "Can not send to same user" });
+      return res.status(402).json({ message: "Can not send to same user" });
     }
 
     const existingConnectionRequest = await Connection.find({
@@ -62,7 +62,7 @@ const interestedUsers = async (req, res) => {
     // console.log(allRequest);
     res.json(allRequest);
   } catch (err) {
-    res.status(401).json({ message: "Server error", error: err });
+    res.status(402).json({ message: "Server error", error: err });
   }
 };
 
@@ -95,7 +95,7 @@ const acceptedUsers = async (req, res) => {
 
     res.send(result);
   } catch (err) {
-    res.status(401).json({ message: "Server error", error: err });
+    res.status(402).json({ message: "Server error", error: err });
   }
 };
 
@@ -109,7 +109,7 @@ const reviewConnectionRequest = async (req, res) => {
     const isExist = await User.findById(touserid);
 
     if (!isExist) {
-      return res.status(401).json({
+      return res.status(402).json({
         message: "User not exits",
       });
     }
@@ -117,7 +117,7 @@ const reviewConnectionRequest = async (req, res) => {
     const allowedStatus = ["accepted", "rejected"];
 
     if (!allowedStatus.includes(status)) {
-      return res.status(401).json({ message: "Invalid status type" });
+      return res.status(402).json({ message: "Invalid status type" });
     }
 
     const interestedUsers = await Connection.findOne({
@@ -127,7 +127,7 @@ const reviewConnectionRequest = async (req, res) => {
     });
 
     if (!interestedUsers) {
-      return res.status(401).json({ message: "no match found" });
+      return res.status(402).json({ message: "no match found" });
     }
 
     interestedUsers.status = status;
@@ -138,7 +138,7 @@ const reviewConnectionRequest = async (req, res) => {
 
     res.json(entry);
   } catch (error) {
-    res.status(401).json({ message: "Server error", error: error });
+    res.status(402).json({ message: "Server error", error: error });
   }
 };
 
@@ -146,7 +146,7 @@ const userFeed = async (req, res) => {
   try {
     const page = req.query.page || 0;
     const limit = req.query.limit || 5;
-    const skip = (page -1) * limit;
+    const skip = (page - 1) * limit;
     console.log(limit);
     const requestedUsers = await Connection.find({
       $or: [{ fromUserId: req.user_id }, { toUserId: req.user._id }],
@@ -171,7 +171,7 @@ const userFeed = async (req, res) => {
 
     res.json(users);
   } catch (error) {
-    res.status(401).json({ message: "Server error", error: error });
+    res.status(402).json({ message: "Server error", error: error });
   }
 };
 

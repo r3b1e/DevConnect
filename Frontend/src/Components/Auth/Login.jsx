@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../Utils/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -7,6 +10,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +26,10 @@ export default function Login() {
         },
         { withCredentials: true }
       );
-      console.log(response);
+      console.log(response.data);
+      dispatch(addUser(response.data));
+      navigate('/');
+      
     } catch (error) {
       console.log(error);
     }

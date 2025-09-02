@@ -96,6 +96,15 @@ const register = async (req, res) => {
   }
 };
 
+const viewProfile = async(req, res) => {
+  try{
+    console.log(req.user);
+    res.json(req.user);
+  }catch(err){
+    res.status(401).json({message: "Not getting profile", error: err});
+  }
+}
+
 const updateProfile = async (req, res) => {
     const user = await User.findById(req.user.id).select("-password");
     if(!user){
@@ -121,4 +130,4 @@ const logout = (req, res) => {
   res.send("Logout Successfull!!");
 }
 
-module.exports = {  register, login, logout, updateProfile };
+module.exports = {  register, login, logout, updateProfile, viewProfile };
