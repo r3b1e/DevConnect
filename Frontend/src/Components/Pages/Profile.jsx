@@ -5,8 +5,6 @@ import { Sidebar } from "../Sidebar"
 const initialProfile = {
   id: "1",
   name: "Sarah Chen",
-  firstName: "Sunny",
-  lastName: "Gupta",
   email: "sarah.chen@example.com",
   bio: "Full-stack developer passionate about React, Node.js, and cloud architecture. Love mentoring junior developers and building scalable applications.",
   location: "San Francisco, CA",
@@ -26,6 +24,10 @@ const initialProfile = {
   
   connections: 127,
 }
+
+const color = ()=>{
+    return `rgba(${(Math.random() * 255).toFixed()}, ${(Math.random() * 255).toFixed()}, ${(Math.random() * 255).toFixed()}, 0.4)`
+  }
 
 // Icon components
 const IconComponent = ({ icon, className = "h-4 w-4" }) => {
@@ -241,7 +243,7 @@ export default function Connection({ profileId = "1", isOwnProfile = true }) {
                 ) : (
                   <div className="text-center space-y-4">
                     {/* Avatar */}
-                    <div className="h-24 w-24 mx-auto bg-blue-600 rounded-full flex items-center justify-center text-white text-lg font-semibold">
+                    <div style={{backgroundColor: color()}} className="h-24 w-24 mx-auto rounded-full flex items-center justify-center text-white text-lg font-semibold">
                       {profile.name
                         .split(" ")
                         .map((n) => n[0])

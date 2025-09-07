@@ -22,8 +22,8 @@ const navigationItems = [
     icon: "users",
   },
   {
-    title: "Skills",
-    url: "/skills",
+    title: "Requests",
+    url: "/requests",
     icon: "award",
   },
   {
@@ -309,7 +309,7 @@ export function Sidebar({children, currentPath = "/" }) {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 p-4">
+        <div className="flex-1 p-4 overflow-y-auto overflow-x-hidden">
           {/* Page content will be rendered here */}
           {children}
         </div>

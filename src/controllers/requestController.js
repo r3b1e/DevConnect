@@ -36,7 +36,7 @@ const sendConnectionRequest = async (req, res) => {
 
     console.log(existingConnectionRequest);
 
-    if (existingConnectionRequest) {
+    if (existingConnectionRequest.length != 0) {
       console.log(touserid, fromUserId);
       // const entry = await Connection.create()
       return res.status(401).json({ message: "Request faild" });
@@ -58,7 +58,7 @@ const interestedUsers = async (req, res) => {
     const allRequest = await Connection.find({
       toUserId: req.user._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName"]);
+    }).populate("fromUserId", ["firstName", "lastName", "gender", "profileUrl", "location", "bio"]);
     // console.log(allRequest);
     res.json(allRequest);
   } catch (err) {
@@ -146,7 +146,7 @@ const userFeed = async (req, res) => {
   try {
     const page = req.query.page || 0;
     const limit = req.query.limit || 5;
-    const skip = (page - 1) * limit;
+    const skip = page * limit;
     console.log(limit);
     const requestedUsers = await Connection.find({
       $or: [{ fromUserId: req.user_id }, { toUserId: req.user._id }],

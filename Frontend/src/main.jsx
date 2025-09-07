@@ -9,11 +9,11 @@ import appStore from './Utils/appStore.js'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter >
   <Provider store={appStore}>
-  <StrictMode>
+  {/* <StrictMode> */}
     
     <App />
     
-  </StrictMode>
+  {/* </StrictMode> */}
   </Provider>
   </BrowserRouter>
 )

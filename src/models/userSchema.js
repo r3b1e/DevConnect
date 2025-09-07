@@ -40,24 +40,35 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: GENDERS,
     },
+    bio: {
+      type: String,
+      trim: true,
+    },
     skill: {
-      type: [
-        {
-          type: String,
-          trim: true,
-          minlength: 1,
-          maxlength: 50,
-        },
-      ],
-      validate: [
-        {
-          validator: (arr) =>
-            Array.isArray(arr) && arr.length >= 1 && arr.length <= 20,
-          message: "Skill array must have between 1 and 20 items",
-        },
-      ],
+      type: [Object],
+      validate: {
+        validator: (arr) => Array.isArray(arr) && arr.length <= 30,
+        message: "Skill array must have between 0 and 30 items",
+      },
     },
     profileUrl: {
+      type: String,
+      trim: true,
+      maxlength: 2048,
+      validate: {
+        validator: (v) => {
+          if (!v) return true;
+          try {
+            const u = new URL(v);
+            return u.protocol === "http:" || u.protocol === "https:";
+          } catch {
+            return false;
+          }
+        },
+        message: "Invalid URL",
+      },
+    },
+    github: {
       type: String,
       trim: true,
       maxlength: 2048,
@@ -86,5 +97,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

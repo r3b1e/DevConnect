@@ -21,7 +21,7 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "invalid credentials" });
     }
 
-    const token =await generateToken(user._id);
+    const token = await generateToken(user._id);
 
     res.cookie("token", token, {
       expires: new Date(Date.now() + 8 * 3600000),
@@ -34,6 +34,8 @@ const login = async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      bio: user.bio,
+      github: user.github,
       gender: user.gender,
       skill: user.skill,
       profileUrl: user.profileUrl,
@@ -53,8 +55,10 @@ const register = async (req, res) => {
       lastName,
       email,
       password,
+      bio,
       gender,
       skill,
+      github,
       profileUrl,
       location,
     } = req.body;
@@ -70,9 +74,11 @@ const register = async (req, res) => {
       firstName,
       lastName,
       email,
+      bio,
       password: hashPassword, // ⚠️ should hash before saving
       gender,
       skill,
+      github,
       profileUrl,
       location,
     });
@@ -116,6 +122,8 @@ const updateProfile = async (req, res) => {
     user.email = req.body.email || user.email;
     user.skill = req.body.skill || user.skill;
     user.profileUrl = req.body.profileUrl || user.profileUrl;
+    user.bio = req.body.bio || user.bio;
+    user.github = req.body.bio || user.github;
 
     const updatedUser = await user.save();
     res.json(updatedUser);

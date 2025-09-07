@@ -1,36 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "../Sidebar";
 import Card from "../Cards/Card";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { addConnected } from "../../Utils/connectionSlice";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addInterested } from "../../Utils/connectionSlice";
 
-const Connection = () => {
-  // Profile data - in real app this could come from props or API
-
-  const select = useSelector((store) => store.userConnection.connectedItems);
+const Requests = () => {
+  const select = useSelector((store) => store.userConnection.interestedItems);
   console.log(select, "data of selector");
 
   const dispatch = useDispatch();
   // Profile data - in real app this could come from props or API
-  const [AcceptedUser, setAcceptedUser] = useState([]);
-  console.log("-------------------------", AcceptedUser);
+  const [connectedUser, setConnectedUser] = useState([]);
+  console.log("-------------------------", connectedUser);
   const getConnection = async () => {
     if (select.length !== 0) {
-      setAcceptedUser(select);
+      setConnectedUser(select);
       return null;
     }
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/request/user/accepted",
+        "http://localhost:8080/api/request/user/interested",
         {
           withCredentials: true,
         }
       );
       console.log("-----", res.data);
-      setAcceptedUser(res.data);
-      dispatch(addConnected(res.data));
+      setConnectedUser(res.data);
+      dispatch(addInterested(res.data));
     } catch (error) {
       console.error(error);
     }
@@ -58,13 +55,13 @@ const Connection = () => {
     </svg>
   );
 
-  useState(() => {
-    getConnection()
+  useEffect(() => {
+    getConnection();
   }, []);
 
   return (
-    <Sidebar currentPath="/connections">
-      {!AcceptedUser ? (
+    <Sidebar currentPath="/requests">
+      {!connectedUser ? (
         <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-center">
           {/* Icon / Illustration */}
           <svg
@@ -83,17 +80,18 @@ const Connection = () => {
           </svg>
 
           {/* Headline */}
-          <h1 className="text-2xl font-bold text-gray-800">No Connection Found</h1>
+          <h1 className="text-2xl font-bold text-gray-800">No Request Found</h1>
         </div>
       ) : (
         <div className="w-full flex flex-wrap gap-x-4 gap-y-8 overflow-x-hidden overflow-y-auto">
-          {AcceptedUser &&
-            AcceptedUser.map((item) => {
+          {connectedUser &&
+            connectedUser.map((item) => {
               return (
                 <Card
                   key={item._id}
-                  user={item}
+                  user={item.fromUserId}
                   getConnection={getConnection}
+                  interested='interested'
                 />
               );
             })}
@@ -103,4 +101,4 @@ const Connection = () => {
   );
 };
 
-export default Connection;
+export default Requests;

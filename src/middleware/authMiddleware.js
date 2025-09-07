@@ -5,7 +5,7 @@ const protect = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(401).json({ message: "Please login first" });
+      return res.status(401).json({ message: "Please login first!" });
     }
 
     const decodeId = jwt.verify(token, "developer");

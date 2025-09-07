@@ -17,7 +17,7 @@ app.use(
     origin: "http://localhost:5173" || "*", // Allows requests from frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"], // Permitted HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Headers for JSON & JWT
-    credentials: true, 
+    credentials: true,
   })
 );
 
