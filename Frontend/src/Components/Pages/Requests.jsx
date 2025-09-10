@@ -13,7 +13,7 @@ const Requests = () => {
   // Profile data - in real app this could come from props or API
   const [connectedUser, setConnectedUser] = useState([]);
   console.log("-------------------------", connectedUser);
-  const getConnection = async () => {
+  const getConnection = async () => { 
     if (select.length !== 0) {
       setConnectedUser(select);
       return null;
@@ -61,7 +61,8 @@ const Requests = () => {
 
   return (
     <Sidebar currentPath="/requests">
-      {!connectedUser ? (
+      {(!select || select.length === 0)
+       ? (
         <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-center">
           {/* Icon / Illustration */}
           <svg
@@ -84,8 +85,8 @@ const Requests = () => {
         </div>
       ) : (
         <div className="w-full flex flex-wrap gap-x-4 gap-y-8 overflow-x-hidden overflow-y-auto">
-          {connectedUser &&
-            connectedUser.map((item) => {
+          {select &&
+            select.map((item) => {
               return (
                 <Card
                   key={item._id}

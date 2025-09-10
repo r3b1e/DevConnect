@@ -19,17 +19,15 @@ const Discover = () => {
       console.log(status);
       console.log("user DATA: -----", userData);
 
-      if (status === "Ignore") {
-        //interested
+        if(status){
+  
         const ignored = await axios.post(
-          `http://localhost:8080/api/request/send/ignored/68923521280d2d11108011f9`,
+          `http://localhost:8080/api/request/send/${status}/${data[pointer]?._id}`,
+          {},
           { withCredentials: true }
         );
-         console.log("Ignored", data[pointer].firstName, "Successfully", ignored);
-      } else if (status === "Accept") {
-        //rejected
-        console.log("Interested", data[pointer].firstName);
-      }
+         console.log("response", data[pointer].firstName, "Successfully", ignored);
+        }
 
       console.log(pointer, ":pointer");
       setPointer(pointer + 1);

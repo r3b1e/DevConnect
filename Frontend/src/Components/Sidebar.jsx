@@ -115,6 +115,7 @@ export function Sidebar({children, currentPath = "/" }) {
       const res = await axios.get("http://localhost:8080/api/auth/profile/view", {
         withCredentials: true
       })
+      console.log(res);
       dispatch(addUser(res.data));
     }
     catch(error){
@@ -182,9 +183,9 @@ export function Sidebar({children, currentPath = "/" }) {
                   {sidebarOpen && (
                     <>
                       <span>{item.title}</span>
-                      {item.title === "Connections" && mockUser.notifications > 0 && (
+                      {item.title === "Requests" && mockUser.notifications > 0 && (
                         <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {mockUser.notifications}
+                          {userData?.interested}
                         </span>
                       )}
                     </>
@@ -248,10 +249,10 @@ export function Sidebar({children, currentPath = "/" }) {
                 <>
                   <div className="flex-1 text-left">
                     <div className="font-semibold text-sm text-gray-900 truncate">
-                      {mockUser.name}
+                      {userData?.firstName} {userData?.lastName}
                     </div>
                     <div className="text-xs text-gray-500 truncate">
-                      {mockUser.role}
+                      {userData?.gender}
                     </div>
                   </div>
                   <IconComponent icon="chevronUp" className="h-4 w-4 text-gray-500" />

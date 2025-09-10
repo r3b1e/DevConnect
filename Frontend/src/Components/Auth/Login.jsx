@@ -21,13 +21,13 @@ export default function Login() {
       const response = await axios.post(
         "http://localhost:8080/api/auth/signin",
         {
-          email: "john.doe@example.com",
-          password: "test1234",
+          email: formData.email,
+          password: formData.password,
         },
         { withCredentials: true }
       );
-      console.log(response.data);
-      dispatch(addUser(response.data));
+      console.log( 'login', response.data);
+      // dispatch(addUser(response.data));
       navigate('/');
       
     } catch (error) {

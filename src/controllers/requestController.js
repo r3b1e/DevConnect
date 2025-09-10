@@ -29,12 +29,12 @@ const sendConnectionRequest = async (req, res) => {
 
     const existingConnectionRequest = await Connection.find({
       $or: [
-        { fromUserId, toUserId: touserid },
+        { fromUserId: fromUserId, toUserId: touserid },
         { fromUserId: touserid, toUserId: fromUserId },
       ],
     });
 
-    console.log(existingConnectionRequest);
+    console.log("reqquest", existingConnectionRequest);
 
     if (existingConnectionRequest.length != 0) {
       console.log(touserid, fromUserId);
@@ -58,7 +58,14 @@ const interestedUsers = async (req, res) => {
     const allRequest = await Connection.find({
       toUserId: req.user._id,
       status: "interested",
-    }).populate("fromUserId", ["firstName", "lastName", "gender", "profileUrl", "location", "bio"]);
+    }).populate("fromUserId", [
+      "firstName",
+      "lastName",
+      "gender",
+      "profileUrl",
+      "location",
+      "bio",
+    ]);
     // console.log(allRequest);
     res.json(allRequest);
   } catch (err) {
@@ -149,25 +156,35 @@ const userFeed = async (req, res) => {
     const skip = page * limit;
     console.log(limit);
     const requestedUsers = await Connection.find({
-      $or: [{ fromUserId: req.user_id }, { toUserId: req.user._id }],
-    }).select("fromUserId toUserId");
+      $or: [{ fromUserId: req.user._id }, { toUserId: req.user._id }],
+    }).select("fromUserId status toUserId");
+
+    console.log(requestedUsers);
 
     const notRequireFeed = new Set();
-    notRequireFeed.add(req.user._id.toString())
+    notRequireFeed.add(req.user._id.toString());
     requestedUsers.forEach((id) => {
       notRequireFeed.add(id.fromUserId.toString());
       notRequireFeed.add(id.toUserId.toString());
     });
-    notRequireFeed.delete(req.user._id.toString());
+    // notRequireFeed.delete(req.user._id.toString());
 
-    // console.log(notRequireFeed);
+    console.log(notRequireFeed);
 
     const users = await User.find({
-      $and: [
-        { _id: { $nin: Array.from(notRequireFeed) } },
-        { _id: { $ne: req.user._id } },
-      ],
-    }).select("firstName lastName email gender skill profileUrl location").skip(skip).limit(limit);
+      _id: { $nin: Array.from(notRequireFeed) },
+    })
+      .select("firstName lastName email gender skill profileUrl location")
+      .skip(skip)
+      .limit(limit);
+
+    skills = {
+      Frontend: [],
+      Backend: [],
+      Devops: [],
+      Database: [],
+      Languages: [],
+    };
 
     res.json(users);
   } catch (error) {

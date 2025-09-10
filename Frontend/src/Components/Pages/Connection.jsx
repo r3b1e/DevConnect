@@ -3,8 +3,9 @@ import { Sidebar } from "../Sidebar";
 import Card from "../Cards/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { addConnected } from "../../Utils/connectionSlice";
+import { addConnected, removeInterested } from "../../Utils/connectionSlice";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Connection = () => {
   // Profile data - in real app this could come from props or API
@@ -58,13 +59,18 @@ const Connection = () => {
     </svg>
   );
 
-  useState(() => {
+  useEffect(() => {
     getConnection()
+
+    return () => {
+      console.log("unmount")
+      dispatch(removeInterested())
+    }
   }, []);
 
   return (
     <Sidebar currentPath="/connections">
-      {!AcceptedUser ? (
+      {(!select || select.length === 0) ? (
         <div className="flex flex-col items-center justify-center h-full bg-gray-100 text-center">
           {/* Icon / Illustration */}
           <svg
@@ -87,8 +93,8 @@ const Connection = () => {
         </div>
       ) : (
         <div className="w-full flex flex-wrap gap-x-4 gap-y-8 overflow-x-hidden overflow-y-auto">
-          {AcceptedUser &&
-            AcceptedUser.map((item) => {
+          {select &&
+            select.map((item) => {
               return (
                 <Card
                   key={item._id}

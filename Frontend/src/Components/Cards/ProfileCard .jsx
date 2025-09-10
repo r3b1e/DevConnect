@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const ProfileCard = ({ getFeed, content }) => {
+  const [skill, setSkill] = useState({});
+  console.log("usestate", skill);
   const profile = {
     name: "Ethan Carter",
     role: "Software Engineer",
     location: "San Francisco, CA",
-    bio: "A passionate software engineer with a knack for building elegant and efficient solutions. Loves to tackle challenging problems and contribute to open-source projects.",
+    bio: "This is default bio description.",
     avatar:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAp4JCZwA7xI0UDilWCMPQvCtFbSGRGDEmpY8DiELSmZMlzskD3avJ2lvlbwj4DPzz_XgWAMLpzIrHW4RCSchMJbCQLHrDg9SBFoIhO8LdPsZS0oDZQfDZLmTl97_aCL8IraMYyQtZW7RHLHFIK0S286yc-0yvdvHcw5zNSq8CjZxlkNSeiVIMAVNisV7J15RDI4nZXZptPxTwnMiY-cOi01Mo26j-TIWP5kotBSSDXH8W8aaCZC3NpnRvuopH7Nm1XCO-ooAUWkEc",
     skills: {
@@ -17,6 +19,42 @@ const ProfileCard = ({ getFeed, content }) => {
       Languages: [],
     },
   };
+
+  useEffect(() => {
+  if (!content?.skill) return; // safeguard in case content.skill is undefined
+
+  console.log("data =>", content.skill);
+
+  // Initialize skills object
+  let skills = {
+    Frontend: [],
+    Backend: [],
+    DevOps: [],
+    Database: [],
+    Language: [],
+  };
+
+  content.skill.forEach((element) => {
+    if (!element?.category) return; // skip if category missing
+
+    // Handle Cloud as DevOps (special case)
+    if (element.category === "Cloud") {
+      skills.DevOps.push(element.name);
+    } 
+    // Handle other categories directly
+    else if (skills[element.category]) {
+      skills[element.category].push(element.name);
+    } else {
+      // Optional: handle unknown categories
+      console.warn(`Unknown category: ${element.category}`);
+    }
+  });
+
+  console.log(skills, "required skills");
+  setSkill(skills);
+  
+
+}, [content]);
 
   const color = () => {
     return `rgba(${(Math.random() * 255).toFixed()}, ${(
@@ -90,13 +128,13 @@ const ProfileCard = ({ getFeed, content }) => {
           <div className="space-y-4">
             {/* Frontend Skills */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {profile.skills.Frontend.length != 0 && (
+              {skill?.Frontend?.length != 0 && (
                 <div>
                   <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                     Frontend
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.Frontend.map((skill, index) => (
+                    {skill?.Frontend?.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full"
@@ -107,13 +145,13 @@ const ProfileCard = ({ getFeed, content }) => {
                   </div>
                 </div>
               )}
-              {profile.skills.Backend.length != 0 && (
+              {skill?.Backend?.length != 0 && (
                 <div>
                   <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                     Backend
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.Backend.map((skill, index) => (
+                    {skill?.Backend?.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full"
@@ -128,13 +166,13 @@ const ProfileCard = ({ getFeed, content }) => {
 
             {/* Cloud & Database Skills */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {profile.skills.Devops.length != 0 && (
+              {skill?.DevOps?.length != 0 && (
                 <div>
                   <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                     Cloud & DevOps
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.Devops.map((skill, index) => (
+                    {skill?.DevOps?.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full"
@@ -145,13 +183,13 @@ const ProfileCard = ({ getFeed, content }) => {
                   </div>
                 </div>
               )}
-              {profile.skills.Database.length != 0 && (
+              {skill?.Database?.length != 0 && (
                 <div>
                   <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                     Database
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.Database.map((skill, index) => (
+                    {skill?.Database?.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full"
@@ -166,13 +204,13 @@ const ProfileCard = ({ getFeed, content }) => {
 
             {/* Languages */}
 
-            {profile.skills.Languages.length != 0 && (
+            {skill?.Language?.length != 0 && (
               <div>
                 <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">
                   Languages
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {profile.skills.Languages.map((skill, index) => (
+                  {skill?.Language?.map((skill, index) => (
                     <span
                       key={index}
                       className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full"
@@ -190,7 +228,7 @@ const ProfileCard = ({ getFeed, content }) => {
         <div className="px-6 sm:px-10 py-4 bg-gray-50 border-t border-gray-200 flex justify-between">
           <button
             onClick={() => {
-              getFeed("Ignore");
+              getFeed("ignored");
             }}
             className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 transition duration-200 ease-in-out"
           >
@@ -198,7 +236,7 @@ const ProfileCard = ({ getFeed, content }) => {
           </button>
           <button
             onClick={() => {
-              getFeed("Accept");
+              getFeed("interested");
             }}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 transition duration-200 ease-in-out"
           >
