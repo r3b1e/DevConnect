@@ -6,6 +6,10 @@ const protect = require("./src/middleware/authMiddleware");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const authRoutes = require('./src/routes/authRoutes');
+const http = require("http");  //step 1
+const initializeSocket = require('./src/utils/socket');
+const chatRoutes = require('./src/routes/chatRoutes');
+
 
 
 dbConnect();
@@ -28,7 +32,12 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/request", ConnectionRoutes);
+app.use("/api", chatRoutes);
 
+
+const server = http.createServer(app);   //step 2
+
+initializeSocket(server)
 // app.use('/', (req, res)=>{
 //     res.send('hello world');
 // })
@@ -37,6 +46,6 @@ app.use('/admin', (req, res) => {
     res.send('admin hello');
 })
 
-app.listen(8080, ()=>{
+server.listen(8080, ()=>{    // step 3
     console.log("working on port 8080");
 })

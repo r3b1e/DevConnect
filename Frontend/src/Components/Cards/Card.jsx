@@ -2,9 +2,11 @@ import React from "react";
 import axios from "axios";
 import { addConnected, removeConnected, removeInterested } from "../../Utils/connectionSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ user, getConnection, interested }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const LocationIcon = () => (
     <svg
       className="w-4 h-4 mr-2"
@@ -69,6 +71,7 @@ const Card = ({ user, getConnection, interested }) => {
   const messageRequest = async () => {
     //message
     console.log("message");
+    navigate(`/message/${user._id}/${user?.firstName}`)
   };
 
   return (

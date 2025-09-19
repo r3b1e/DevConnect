@@ -10,11 +10,13 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     // TODO: Implement authentication logic
     console.log("Login attempt:", formData);
     try {
@@ -31,7 +33,8 @@ export default function Login() {
       navigate('/');
       
     } catch (error) {
-      console.log(error);
+      console.log("this is error => ", error);
+      setError("Invalid Credentials");
     }
   };
 
@@ -168,6 +171,10 @@ export default function Login() {
                   </button>
                 </div>
               </div>
+
+              {error.length !== 0 && <p className="text-xs text-red-400">
+                {error}
+                </p>}
 
               {/* Submit Button */}
               <button

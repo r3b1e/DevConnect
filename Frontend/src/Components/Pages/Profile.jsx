@@ -708,7 +708,7 @@ export default function Connection({ profileId = "1", isOwnProfile = true }) {
                   saveToDB();
                   notify();
                 }}
-                className="absolute bottom-0 right-0 bg-blue-500 rounded-md py-1 mx-10 px-3 hover:bg-purple-400 "
+                className="absolute bottom-0 right-0 bg-blue-500 text-white rounded-md py-1 mx-10 px-3 hover:bg-purple-400 "
               >
                 Save Changes
               </button>

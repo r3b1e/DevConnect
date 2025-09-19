@@ -8,25 +8,30 @@ export default function Signin() {
     lastName: "",
     email: "",
     password: "",
+    gender: "",
   });
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // TODO: Implement registration logic
     console.log("Registration attempt:", formData);
+    setError("");
     try {
       const response = await axios.post(
         "http://localhost:8080/api/auth/signup",
         {
-          firstName: "Neha",
-          lastName: "Verma",
-          email: "dustin@gmail.com",
-          password: "test@123",
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          gender: formData.gender,
         },
         { withCredentials: true }
       );
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      setError(error.response.data.message)
     }
   };
 
@@ -125,6 +130,36 @@ export default function Signin() {
                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
                            transition-colors duration-200"
                 />
+
+              {/* Gender Field */}
+<div className="space-y-2">
+  <label
+    htmlFor="gender"
+    className="block text-sm font-medium text-gray-700"
+  >
+    Gender
+  </label>
+  <select
+    id="gender"
+    value={formData.gender}
+    onChange={(e) =>
+      setFormData((prev) => ({
+        ...prev,
+        gender: e.target.value,
+      }))
+    }
+    required
+    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+               bg-white text-gray-700 focus:outline-none focus:ring-2 
+               focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+  >
+    <option value="" disabled>Select your gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
               </div>
 
               {/* Email Field */}
@@ -219,6 +254,10 @@ export default function Signin() {
                   </button>
                 </div>
               </div>
+
+              {error.length !== 0 && <p className="text-xs text-red-400">
+                {error}
+                </p>}
 
               {/* Submit Button */}
               <button

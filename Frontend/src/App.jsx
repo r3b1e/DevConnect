@@ -9,6 +9,7 @@ import Discover from "./Components/Pages/Discover";
 import Profile from "./Components/Pages/Profile";
 import Connection from "./Components/Pages/Connection";
 import Requests from "./Components/Pages/Requests";
+import MessagingPage from "./Components/Pages/MessagingPage";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='/signup' element={<Signin />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/requests' element={<Requests />} />
+          <Route path='/message/:touserid/:username' element={<MessagingPage />} />
 
         </Routes>
     </div>

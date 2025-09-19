@@ -97,7 +97,7 @@ const Connection = () => {
             select.map((item) => {
               return (
                 <Card
-                  key={item._id}
+                  key={item?._id}
                   user={item}
                   getConnection={getConnection}
                 />
