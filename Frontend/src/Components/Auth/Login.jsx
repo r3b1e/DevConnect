@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../Utils/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utils/base";
 
 export default function Login() {
@@ -192,12 +192,12 @@ export default function Login() {
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
                 Don't have an account?{" "}
-                <a
-                  href="/signup"
+                <Link
+                  to="/signup"
                   className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </div>
           </div>

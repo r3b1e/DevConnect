@@ -204,8 +204,8 @@ export function Sidebar({children, currentPath = "/" }) {
               </h3>
             )}
             <nav className="space-y-1">
-              <a
-                href="/notifications"
+              <Link
+                to="/notifications"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
               >
                 <IconComponent icon="bell" />
@@ -219,7 +219,7 @@ export function Sidebar({children, currentPath = "/" }) {
                     )}
                   </>
                 )}
-              </a>
+              </Link>
               <a
                 href="/settings"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
@@ -264,13 +264,13 @@ export function Sidebar({children, currentPath = "/" }) {
             {/* Dropdown Menu */}
             {userDropdownOpen && (
               <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
-                <a
-                  href="/profile/edit"
+                <Link
+                  to="/profile/edit"
                   className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   <IconComponent icon="user" />
                   Edit Profile
-                </a>
+                </Link>
                 <a
                   href="/settings"
                   className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -279,13 +279,13 @@ export function Sidebar({children, currentPath = "/" }) {
                   Settings
                 </a>
                 <hr className="my-2 border-gray-200" />
-                <a
-                  href="/login"
+                <Link
+                  to="/login"
                   className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                 >
                   <IconComponent icon="logout" />
                   Sign Out
-                </a>
+                </Link>
               </div>
             )}
           </div>

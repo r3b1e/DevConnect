@@ -6,6 +6,7 @@ import { useState } from "react";
 import { addConnected, removeInterested } from "../../Utils/connectionSlice";
 import axios from "axios";
 import { useEffect } from "react";
+import { baseUrl } from "../../Utils/base";
 
 const Connection = () => {
   // Profile data - in real app this could come from props or API
@@ -24,7 +25,7 @@ const Connection = () => {
     }
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/request/user/accepted",
+        `${baseUrl}/api/request/user/accepted`,
         {
           withCredentials: true,
         }

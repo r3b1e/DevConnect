@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addfeed, removeFeed } from "../../Utils/feedSlice";
 import ProfileCard from "../Cards/ProfileCard ";
 import { useState } from "react";
+import { baseUrl } from "../../Utils/base";
 
 const Discover = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Discover = () => {
         if(status){
   
         const ignored = await axios.post(
-          `http://localhost:8080/api/request/send/${status}/${data[pointer]?._id}`,
+          `${baseUrl}/api/request/send/${status}/${data[pointer]?._id}`,
           {},
           { withCredentials: true }
         );
@@ -36,7 +37,7 @@ const Discover = () => {
       }
 
       const res = await axios.get(
-        `http://localhost:8080/api/request/user/feed?page=${page}&limit=5`,
+        `${baseUrl}/api/request/user/feed?page=${page}&limit=5`,
         {
           withCredentials: true,
         }

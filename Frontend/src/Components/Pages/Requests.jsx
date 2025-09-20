@@ -4,6 +4,7 @@ import Card from "../Cards/Card";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addInterested } from "../../Utils/connectionSlice";
+import { baseUrl } from "../../Utils/base";
 
 const Requests = () => {
   const select = useSelector((store) => store.userConnection.interestedItems);
@@ -20,7 +21,7 @@ const Requests = () => {
     }
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/request/user/interested",
+        `${baseUrl}/api/request/user/interested`,
         {
           withCredentials: true,
         }

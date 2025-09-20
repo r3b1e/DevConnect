@@ -3,6 +3,7 @@ import axios from "axios";
 import { addConnected, removeConnected, removeInterested } from "../../Utils/connectionSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../Utils/base";
 
 const Card = ({ user, getConnection, interested }) => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const Card = ({ user, getConnection, interested }) => {
   const acceptRequest = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:8080/api/request/review/accepted/${user._id}`,
+        `${baseUrl}/api/request/review/accepted/${user._id}`,
         {},
         {
           withCredentials: true,

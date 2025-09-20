@@ -5,6 +5,7 @@ import { addUser } from "../../Utils/userSlice";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseUrl } from "../../Utils/base";
 
 // Mock data - in real app this would come from database
 const initialProfile = {
@@ -270,7 +271,7 @@ export default function Connection({ profileId = "1", isOwnProfile = true }) {
   const saveToDB = async () => {
     try {
       const res = await axios.put(
-        "http://localhost:8080/api/auth/profile/edit",
+        `${baseUrl}/api/auth/profile/edit`,
         {
           ...myProfile,
         },

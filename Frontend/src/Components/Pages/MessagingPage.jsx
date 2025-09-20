@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Sidebar } from "../Sidebar";
 import axios from "axios";
 import CrossButton from "../Button/CrossButton";
+import { baseUrl } from "../../Utils/base";
 
 const MessagingPage = () => {
   const user = useSelector((store) => store.user);
@@ -41,7 +42,7 @@ const MessagingPage = () => {
   const fetchMessage = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8080/api/message/" + toUserId,
+        `${baseUrl}/api/message/` + toUserId,
         {
           withCredentials: true,
         }

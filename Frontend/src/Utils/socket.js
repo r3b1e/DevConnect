@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
+import { baseUrl } from "./base";
 
 export const createSocketConnection = () => {
-    return io("http://localhost:8080");
+    return io(baseUrl);
 }
