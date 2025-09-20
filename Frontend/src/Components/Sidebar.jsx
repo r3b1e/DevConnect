@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 import { addUser } from "../Utils/userSlice"
+import { baseUrl } from "../Utils/base"
 
 // Navigation items
 const navigationItems = [
@@ -112,7 +113,7 @@ export function Sidebar({children, currentPath = "/" }) {
 
   const fetchUser = async ()=> {
     try{
-      const res = await axios.get("http://localhost:8080/api/auth/profile/view", {
+      const res = await axios.get(`${baseUrl}/api/auth/profile/view`, {
         withCredentials: true
       })
       console.log(res);
