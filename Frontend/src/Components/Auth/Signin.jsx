@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { baseUrl } from "../../Utils/base";
 
 export default function Signin() {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +20,7 @@ export default function Signin() {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/signup",
+        `${baseUrl}/api/auth/signup`,
         {
           firstName: formData.firstName,
           lastName: formData.lastName,

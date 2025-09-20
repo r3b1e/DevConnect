@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../Utils/userSlice";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../Utils/base";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,7 @@ export default function Login() {
     console.log("Login attempt:", formData);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/auth/signin",
+        `${baseUrl}/api/auth/signin`,
         {
           email: formData.email,
           password: formData.password,
